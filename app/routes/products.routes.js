@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/product.model.js");
 
-
+//getting all products//
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
@@ -11,11 +11,11 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
+//getting one product//
 router.get("/:id", getProduct, (req, res) => {
   res.send(req.product);
 });
-
+//creating a product//
 router.post("/", async (req, res) => {
   const product = new Product({
     title: req.body.title,
@@ -31,8 +31,8 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-router.patch("/:id", getProduct, async (req, res) => {
+//updating a product//
+router.put("/:id", getProduct, async (req, res) => {
   if (req.body.title != null) {
     res.product.title = req.body.title;
   }
@@ -52,7 +52,7 @@ router.patch("/:id", getProduct, async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
+//deleting a product//
 router.delete("/:id", getProduct, async (req, res) => {
   try {
     await res.product.remove();
@@ -63,16 +63,14 @@ router.delete("/:id", getProduct, async (req, res) => {
 });
 
 async function getProduct(req, res, next) {
-  let product;
   try {
-    product = await Product.findById(req.params.id);
+    product = await Product.findById(req.body.id);
     if (product == null) {
       return res.status(404).json({ message: "Cannot find product" });
     }
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
-
   res.product = product;
   next();
 }
