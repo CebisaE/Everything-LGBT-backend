@@ -1,16 +1,16 @@
 const express = require("express");
 const verifyToken = require("../middleware/authJwt");
-const Customer = require("../models/customers");
+const Customer = require("../models/customer.model");
 const getProduct = require("../middleware/obtain");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const Product = require("../models/products.models");
+const Product = require("../models/product.model");
 
-router.get("/", [verifyToken, getCustomer], (req, res) => {
+router.get("/", getCustomer, (req, res) => {
     return res.send(res.customer.cart);
   });
   
-router.post("/:id", [verifyToken, getCustomer],  async (req, res) =>{
+router.post("/:id",  getCustomer,  async (req, res) =>{
   let product = await Product.findById(req.params.id).lean()
   let qty = req.body.qty
   let cart = res.customer.cart
@@ -38,7 +38,7 @@ router.post("/:id", [verifyToken, getCustomer],  async (req, res) =>{
   }
 });
 
-router.delete("/", [verifyToken, getCustomer], async (req, res) => {
+router.delete("/", getCustomer, async (req, res) => {
     try{
         res.customer.cart = []
 
@@ -49,7 +49,7 @@ router.delete("/", [verifyToken, getCustomer], async (req, res) => {
     }
 });
 
-router.delete("/:id", [verifyToken, getCustomer], async (req, res) => {
+router.delete("/:id", getCustomer, async (req, res) => {
   let cart = res.customer.cart;
   cart.forEach((cartitem) => {
     if (cartitem._id == req.params.id) {
@@ -69,7 +69,7 @@ router.delete("/:id", [verifyToken, getCustomer], async (req, res) => {
   }
 });
 
-router.put("/:id", [verifyToken, getProduct], async (req, res) => {
+router.put("/:id", getProduct, async (req, res) => {
   const customer = await Customer.findById(req.customerId);
   const inCart = customer.cart.some((prod) => prod._id == req.params._id);
   

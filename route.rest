@@ -1,7 +1,7 @@
 GET http://localhost:8080/
 
 ################################
-
+//create//
 POST http://localhost:8080/products
 content-type: application/json
 
@@ -14,14 +14,54 @@ content-type: application/json
 }
 
 ################################
-PUT http://localhost:8080/products/6229ec0335d0a4b5debb03da
+//update//
+PUT http://localhost:8081/products/6229ec0335d0a4b5debb03da
 content-type: application/json
 
 {
-    "title":"rainbow shorts",
-    "price": "150.00",
+    "title": "rainbow shorts",
+    "price": 250,
     "category": "Shorts",
     "img": "https://i.postimg.cc/SKcXKZQ6/Screenshot-20220307-191711-Whats-App-min.jpg",
-    "description": "A pair of rainbow shorts "
-}
+    "description": "A pair of rainbow shorts"
 
+}
+################################################################
+GET http://localhost:8081/products/6229ec0335d0a4b5debb03da
+
+
+################################
+//deleting//
+DELETE http://localhost:8081/products/6229ec0335d0a4b5debb03da
+
+################################################################
+
+//getting one//
+GET http://localhost:8081/customer/622b10199a9c1e44323ba474
+
+
+################################################################
+//create//
+POST http://localhost:8081/customer/signup
+content-type: application/json
+
+{
+    "name":"simankele january",
+    "email": "simamnkele@gmail.com",
+    "phone_number": "0796789087",
+    "password": "passworder"
+}
+###
+//update//
+PUT http://localhost:8081/customer/622b05c1df4989523d61b77f
+content-type: application/json
+
+{
+    "name":"sindile makhatini",
+    "email": "sindile@gmail.com",
+    "phone_number": "0671975655",
+    "password": "passwords"
+}
+################################
+//delete//
+DELETE http://localhost:8081/customer/622b10199a9c1e44323ba474

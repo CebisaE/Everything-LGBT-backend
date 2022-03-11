@@ -63,8 +63,9 @@ router.delete("/:id", getProduct, async (req, res) => {
 });
 
 async function getProduct(req, res, next) {
+  let product;
   try {
-    product = await Product.findById(req.body.id);
+    product = await Product.findById(req.params.id);
     if (product == null) {
       return res.status(404).json({ message: "Cannot find product" });
     }
