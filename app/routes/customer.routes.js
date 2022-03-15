@@ -30,8 +30,6 @@ router.post("/signup", DuplicatednameorEmail, async (req, res, next) => {
     });
     const newCustomer = await customer.save();
     res.status(201).json(newCustomer);
-    // console.log(salt)
-    // console.log(hashedPassword)
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -55,7 +53,7 @@ router.post("/signin", async (req, res) => {
         });
       }
       let token = jwt.sign({ id: customer.id }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: 86400, // 24 hours
+        expiresIn: 86400, 
       });
       res.status(200).send({
         id: customer.id,
@@ -109,7 +107,7 @@ router.delete("/:id", getCustomer, async (req, res) => {
 async function getCustomer(req, res, next) {
   let customer;
   try {
-    customer = await Customer.findById(req.params.id);
+    customer = await Customer.findById(req.body.id);
     if (customer == null) {
       return res.status(404).json({ message: "Cannot find Customer" });
     }
