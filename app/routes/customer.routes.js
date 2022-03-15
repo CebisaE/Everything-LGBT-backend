@@ -71,7 +71,7 @@ router.post("/signin", async (req, res) => {
   }
 });
 router.put("/:id", getCustomer, async (req, res) => {
-  if (req.params.id != req.customer_Id) {
+  if (req.body.id != req.customer_Id) {
     return res.status(401).send({ message: "Unauthorized!" });
   }
   if (req.body.name != null) {
