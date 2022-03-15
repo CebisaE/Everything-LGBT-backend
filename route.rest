@@ -46,10 +46,10 @@ POST http://localhost:8081/customer/signup
 content-type: application/json
 
 {
-    "name":"simankele january",
-    "email": "simamnkele@gmail.com",
-    "phone_number": "0796789087",
-    "password": "passworder"
+    "name":"bongani",
+    "email": "bongani@gmail.com",
+    "phone_number": "0817245057",
+    "password": "teddy"
 }
 ###
 //update//
