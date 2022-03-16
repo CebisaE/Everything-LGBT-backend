@@ -20,4 +20,5 @@ app.use('/customer', customerRouter)
 
 app.use("/cart", cartRouter);
 
-app.listen(process.env.PORT || 8081, () => console.log(`Server started on port 8000`))
+const port = process.env.PORT || 3000
+app.listen(port, () => console.log(`Server started on port ${port}`))

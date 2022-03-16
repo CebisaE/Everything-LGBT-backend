@@ -1,4 +1,5 @@
-const config = require("../config/auth.config");
+const creds = require("../config/auth.config");
+const config = require('config')
 const db = require("../models");
 const Customer= db.customer;
 const Role = db.role;
@@ -66,7 +67,7 @@ exports.signin = (req, res) => {
       if (!customer) {
         return res.status(404).send({ message: "Customer Not found." });
       }
-      var passwordIsValid = bcrypt.compareSync(
+      var passwordIsValid = bcrypt.compare(
         req.body.password,
         customer.password
       );
@@ -76,7 +77,7 @@ exports.signin = (req, res) => {
           message: "Invalid Password!"
         });
       }
-      var token = jwt.sign({ id: customer.id }, config.secret, {
+      var token = jwt.sign({ id: customer.id }, config.get("secret"), {
         expiresIn: 86400 // 24 hours
       });
       var authorities = [];

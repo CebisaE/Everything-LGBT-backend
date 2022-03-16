@@ -65,15 +65,15 @@ router.post("/signup", DuplicatedCustomernameorEmail, async (req, res, next) => 
     res.status(400).json({ message: err.message });
   }
 });
-//updating a customer//
-router.post("/signin", async (req, res) => {
+//logging in a customer//
+router.patch("/signin", async (req, res) => {
   try {
     Customer.findOne({ name: req.body.name }, (err, customer) => {
       if (err) return handleError(err);
       if (!customer) {
         return res.status(404).send({ message: "customer Not found." });
       }
-      let passwordIsValid = bcrypt.compareSync(
+      let passwordIsValid = bcrypt.compare(
         req.body.password,
         customer.password
       );

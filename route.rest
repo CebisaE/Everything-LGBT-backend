@@ -42,7 +42,7 @@ GET http://localhost:8081/customer/signin/623192d77ab55a246462690a/
 
 
 ################################################################
-//create//
+//registering customer//
 POST http://localhost:8081/customer/signup/
 content-type: application/json
 
@@ -54,15 +54,14 @@ content-type: application/json
 }
 ###
 //update//
-PUT http://localhost:8081/customer/signin/622b05c1df4989523d61b77f
+PATCH http://localhost:3000/customer/signin/
 content-type: application/json
 
 {
     "name":"sindile makhatini",
-    "email": "sindilem@gmail.com",
-    "phone_number": "0671975655",
     "password": "passwords"
 }
+
 ################################
 //delete//
 DELETE http://localhost:8081/customer/622b10199a9c1e44323ba474
