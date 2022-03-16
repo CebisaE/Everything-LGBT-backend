@@ -2,6 +2,20 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/product.model.js");
 
+
+async function getProduct(req, res, next) {
+  let product;
+  try {
+    product = await Product.findById(req.params.id);
+    if (product == null) {
+      return res.status(404).json({ message: "Cannot find product" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.product = product;
+  next();
+}
 //getting all products//
 router.get("/", async (req, res) => {
   try {
@@ -13,7 +27,8 @@ router.get("/", async (req, res) => {
 });
 //getting one product//
 router.get("/:id", getProduct, (req, res) => {
-  res.send(req.product);
+  console.log(res.product);
+  res.send(res.product);
 });
 //creating a product//
 router.post("/", async (req, res) => {
@@ -62,18 +77,6 @@ router.delete("/:id", getProduct, async (req, res) => {
   }
 });
 
-async function getProduct(req, res, next) {
-  let product;
-  try {
-    product = await Product.findById(req.params.id);
-    if (product == null) {
-      return res.status(404).json({ message: "Cannot find product" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.product = product;
-  next();
-}
+
 
 module.exports = router;

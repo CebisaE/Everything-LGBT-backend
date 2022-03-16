@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const customerSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -15,6 +16,10 @@ const customerSchema = new mongoose.Schema({
   phone_number: {
     type: Number,
     required: true,
+  },
+  join_date: {
+    type: String,
+    default: Date.now,
   },
   cart: {
     type: Array,

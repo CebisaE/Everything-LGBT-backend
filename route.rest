@@ -37,28 +37,29 @@ DELETE http://localhost:8081/products/6229ec0335d0a4b5debb03da
 ################################################################
 
 //getting one//
-GET http://localhost:8081/customer/622b10199a9c1e44323ba474
+GET http://localhost:8081/customer/signin/623192d77ab55a246462690a/
+
 
 
 ################################################################
 //create//
-POST http://localhost:8081/customer/signup
+POST http://localhost:8081/customer/signup/
 content-type: application/json
 
 {
-    "name":"bongani",
-    "email": "bongani@gmail.com",
+    "name":"zharne",
+    "email": "zharne@gmail.com",
     "phone_number": "0817245057",
     "password": "teddy"
 }
 ###
 //update//
-PUT http://localhost:8081/customer/622b05c1df4989523d61b77f
+PUT http://localhost:8081/customer/signin/622b05c1df4989523d61b77f
 content-type: application/json
 
 {
     "name":"sindile makhatini",
-    "email": "sindile@gmail.com",
+    "email": "sindilem@gmail.com",
     "phone_number": "0671975655",
     "password": "passwords"
 }
