@@ -23,4 +23,7 @@ app.use('/customer', customerRouter)
 app.use("/cart", cartRouter);
 
 const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`Server started on port ${port}`))
+
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`)
+});
