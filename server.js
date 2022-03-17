@@ -13,7 +13,9 @@ app.use(cors())
 
 const productsRouter = require('./app/routes/products.routes')
 const customerRouter = require('./app/routes/customer.routes')
-
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+  })
 const cartRouter = require("./app/routes/cart.routes");
 app.use('/products', productsRouter)
 app.use('/customer', customerRouter)
