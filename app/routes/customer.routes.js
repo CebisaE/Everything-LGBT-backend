@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const Customer = require("../models/customer.model");
@@ -83,6 +84,8 @@ router.patch("/signin", async (req, res) => {
           message: "Invalid Password!",
         });
       }
+
+      console.log(process.env.ACCESS_TOKEN_SECRET)
       let token = jwt.sign({ id: customer.id }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: 86400, 
       });
