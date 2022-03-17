@@ -69,7 +69,7 @@ router.post("/signup", DuplicatedCustomernameorEmail, async (req, res, next) => 
 //logging in a customer//
 router.patch("/signin", async (req, res) => {
   try {
-    Customer.findOne({ name: req.params.name }, (err, customer) => {
+    Customer.findOne({ name: req.body.name }, (err, customer) => {
       if (err) return handleError(err);
       if (!customer) {
         return res.status(404).send({ message: "customer Not found." });
@@ -95,6 +95,7 @@ router.patch("/signin", async (req, res) => {
         email: customer.email,
         password: customer.password,
         phone_number: customer.phone_number,
+        cart: customer.cart,
         accessToken: token,
       });
     });
