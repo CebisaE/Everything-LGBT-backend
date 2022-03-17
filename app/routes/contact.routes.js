@@ -20,7 +20,7 @@ app.post('/', (req, res) => {
       const mailOptions = {
         from: email,
         to: 'emihleemza510@gmail.com',
-        subject: 'Sending Email using Node.js',
+        subject: 'you contacted us',
         text: `${name} has sent you an email! 
         
         ${textarea}`

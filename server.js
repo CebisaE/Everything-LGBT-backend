@@ -19,7 +19,7 @@ db.on('error', (error) => console.log(error))
 db.once('open', () => console.log('Connected to Database'))
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Welcome to EverthingLGBT+ clothing shop! -Enjoy your Stay although there`s nothing to do here it`s just a bunch of code')
 })
 
 const cartRouter = require("./app/routes/cart.routes");

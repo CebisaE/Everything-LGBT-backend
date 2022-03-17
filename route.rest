@@ -65,3 +65,12 @@ content-type: application/json
 ################################
 //delete//
 DELETE http://localhost:8081/customer/622b10199a9c1e44323ba474
+
+###
+POST http://localhost:3000/contact/
+
+{
+    "name":"bongani",
+    "email":"bongani@gmail.com",
+    "message":"jhghkfdjkhjgfvjk"
+}
