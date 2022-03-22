@@ -16,14 +16,14 @@ router.post("/:id", [verifyToken, getCustomer], async (req, res) => {
   let cart = res.customer.cart;
   let added = false;
   cart.forEach((item) => {
-    if (item._id.valueOf() == movie._id.valueOf()) {
+    if (item._id.valueOf() == product._id.valueOf()) {
       item.qty += qty;
       added = true;
     }
   });
 
   if (!added) {
-    cart.push({ ...movie, qty });
+    cart.push({ ...product, qty });
   }
   try {
     res.customer.cart = cart;
@@ -57,7 +57,7 @@ router.put("/:id", [verifyToken, getProduct], async (req, res) => {
   }
   try {
     const ACCESS_TOKEN_SECRET = jwt.sign(
-      JSON.stringify(updatedUser),
+      JSON.stringify(updatedCustomer),
       process.env.ACCESS_TOKEN_SECRET
     );
     res.status(201).json({ jwt: ACCESS_TOKEN_SECRET, cart: updatedCustomer.cart });
@@ -84,7 +84,7 @@ router.delete("/:id", [verifyToken, getCustomer], async (req, res) => {
         expiresIn: 86400, // 24 hours
       }
     );
-    res.json({ message: "Deleted movie", updated, token });
+    res.json({ message: "Deleted product", updated, token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
