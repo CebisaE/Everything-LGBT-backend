@@ -22,25 +22,25 @@ app.post(
   async (req, res, next) => {
     const customer = await Customer.findById(req.customer._id);
 
-    let product_id = res.product._id;
+    // let product_id = res.product._id;
     let title = res.product.title;
     let category = res.product.category;
     let description = res.product.description;
     let img = res.product.img;
     let price = res.product.price;
-    let quantity = req.body.quantity;
-    let created_by = req.customer._id;
+    // let quantity = req.body.quantity;
+    // let created_by = req.customer._id;
 
     try {
       customer.cart.push({
-        product_id,
+        // product_id,
         title,
         category,
         description,
         img,
         price,
-        quantity,
-        created_by,
+        // quantity,
+        // created_by,
       });
       const updatedCustomer = await customer.save();
       res.status(201).json(updatedCustomer);
