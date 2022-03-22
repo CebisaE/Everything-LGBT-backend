@@ -32,3 +32,6 @@ app.use("/cart", cartRouter);
 app.listen(app.get("port"), () => {
     console.log(`Server started`)
 });
+
+
+module.exports = app;
