@@ -6,103 +6,89 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Product = require("../models/product.model");
 
-router.get("/", [verifyToken, getCustomer], (req, res) => {
-  return res.send(res.customer.cart);
-});
-
-router.post("/:id", [verifyToken, getCustomer], async (req, res) => {
-  let product = await Product.findById(req.params.id).lean();
-  let qty = req.body.qty;
-  let cart = res.customer.cart;
-  let added = false;
-  cart.forEach((item) => {
-    if (item._id.valueOf() == product._id.valueOf()) {
-      item.qty += qty;
-      added = true;
-    }
-  });
-
-  if (!added) {
-    cart.push({ ...product, qty });
-  }
+// GET USER CART
+app.get("/:id/cart", [verifyToken, getCustomer], (req, res, next) => {
   try {
-    res.customer.cart = cart;
-
-    let token = jwt.sign(
-      { _id: req.customerId, cart: res.customer.cart },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: 86400, // 24 hours
-      }
-    );
-    const updatedCustomer = await res.customer.save();
-    res.status(200).json({ updatedCustomer, token });
+    res.json(req.customer.cart);
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: error.message });
   }
 });
 
-router.put("/:id", [verifyToken, getProduct], async (req, res) => {
-  const customer = await Customer.findById(req.customer._id);
-  const inCart = customer.cart.some((prod) => prod._id == req.params._id);
+// ADD PRODUCT TO USER CART
+app.post(
+  "/:id/cart",
+  [verifyToken, getProduct],
+  async (req, res, next) => {
+    const customer = await Customer.findById(req.customer._id);
 
-  let updatedCustomer;
-  if (inCart) {
-    const product = customer.cart.find((prod) => prod._id == req.params._id);
-    product.qty += req.body.qty;
-    updatedCustomer = await customer.save();
-  } else {
-    customer.cart.push({ ...res.product, qty: req.body.qty });
-    updatedCustomer = await customer.save;
-  }
-  try {
-    const ACCESS_TOKEN_SECRET = jwt.sign(
-      JSON.stringify(updatedCustomer),
-      process.env.ACCESS_TOKEN_SECRET
-    );
-    res.status(201).json({ jwt: ACCESS_TOKEN_SECRET, cart: updatedCustomer.cart });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+    let product_id = res.product._id;
+    let title = res.product.title;
+    let category = res.product.category;
+    let description = res.product.description;
+    let img = res.product.img;
+    let price = res.product.price;
+    let quantity = req.body.quantity;
+    let created_by = req.customer._id;
 
-router.delete("/:id", [verifyToken, getCustomer], async (req, res) => {
-  let cart = res.customer.cart;
-  cart.forEach((cartitem) => {
-    if (cartitem._id == req.params.id) {
-      cart = cart.filter((cartitems) => cartitems._id != req.params.id);
+    try {
+      customer.cart.push({
+        product_id,
+        title,
+        category,
+        description,
+        img,
+        price,
+        quantity,
+        created_by,
+      });
+      const updatedCustomer = await customer.save();
+      res.status(201).json(updatedCustomer);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-  });
-  try {
-    res.customer.cart = cart;
+  }
+);
 
-    const updated = res.customer.save();
-    let token = jwt.sign(
-      { _id: req.customerId, cart },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: 86400, // 24 hours
+// UPDATE PRODUCT IN USER CART
+app.put(
+  "/:id/cart",
+  [verifyToken, getProduct],
+  async (req, res, next) => {
+    const customer = await Customer.findById(req.customer._id);
+    const inCart = customer.cart.some((prod) => prod.product_id == req.params.id);
+    console.log(inCart);
+
+    if (inCart) {
+      try {
+        const product = customer.cart.find(
+          (prod) => prod.product_id == req.params.id
+        );
+        product.quantity = req.body.quantity;
+        customer.cart.quantity = product.quantity;
+        customer.markModified("cart");
+        const updatedCustomer = await customer.save();
+        console.log(updatedCustomer);
+        res.status(201).json(updatedCustomer.cart);
+      } catch (error) {
+        res.status(500).json(console.log(error));
       }
-    );
-    res.json({ message: "Deleted product", updated, token });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-async function getCustomer(req, res, next) {
-  let customer;
-  try {
-    customer = await Customer.findById(req.customerId);
-    if (customer == null) {
-      return res.status(404).json({ message: "Cannot find Customer" });
     }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
   }
+);
 
-  res.customer = customer;
-  next();
-}
-
+// DELETE PRODUCT IN USER CART'
+app.delete(
+  "/:id/cart",
+  [verifyToken, getProduct],
+  async (req, res, next) => {
+    res.send(res.customer);
+    // try {
+    //   await res.user.cart.remove();
+    //   res.json({ message: "Deleted Product" });
+    // } catch (error) {
+    //   res.status(500).json({ message: error.message });
+    // }
+  }
+);
 module.exports = router;
