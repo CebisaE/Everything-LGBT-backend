@@ -43,14 +43,14 @@ GET http://localhost:8081/customer/signin/623192d77ab55a246462690a/
 
 ################################################################
 //registering customer//
-POST http://localhost:8081/customer/signup/
+POST http://localhost:3000/customer/signup/
 content-type: application/json
 
 {
-    "name":"zharne",
-    "email": "zharne@gmail.com",
-    "phone_number": "0817245057",
-    "password": "teddy"
+    "name":"mihle",
+    "email": "mihle@gmail.com",
+    "phone_number": "0747377043",
+    "password": "cebisa"
 }
 ###
 //update//
@@ -58,8 +58,8 @@ PATCH http://localhost:3000/customer/signin/
 content-type: application/json
 
 {
-    "name":"sindile makhatini",
-    "password": "passwords"
+    "name":"siyanda",
+    "password": "siyanda"
 }
 
 ################################
@@ -74,3 +74,7 @@ POST http://localhost:3000/contact/
     "email":"bongani@gmail.com",
     "message":"jhghkfdjkhjgfvjk"
 }
+
+//roles////////////////////////////////
+###
+GET http://localhost:3000/admin/

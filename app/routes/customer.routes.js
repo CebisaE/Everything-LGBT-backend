@@ -97,6 +97,7 @@ router.patch("/signin", async (req, res) => {
         phone_number: customer.phone_number,
         cart: customer.cart,
         accessToken: token,
+        roles:customer.roles
       });
     });
   } catch (err) {
@@ -138,5 +139,11 @@ router.delete("/:id", getCustomer, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+// app.get(
+//   "/api/test/admin",
+//   [authJwt.verifyToken, authJwt.isAdmin],
+//   controller.adminBoard
+// );
 
 module.exports = router;

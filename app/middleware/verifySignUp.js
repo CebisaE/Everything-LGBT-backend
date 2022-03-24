@@ -1,3 +1,7 @@
+const db = require("../models");
+const ROLES = db.ROLES;
+const Customer = db.customer;
+
 const Customer = require("../models/customer.models");
 
 checkDuplicateCustomernameOrEmail = async (req, res, next) => {
@@ -16,4 +20,22 @@ checkDuplicateCustomernameOrEmail = async (req, res, next) => {
   next();
 };
 
-module.exports = checkDuplicateCustomernameOrEmail;
+checkRolesExisted = (req, res, next) => {
+  if (req.body.roles) {
+    for (let i = 0; i < req.body.roles.length; i++) {
+      if (!ROLES.includes(req.body.roles[i])) {
+        res.status(400).send({
+          message: `Failed! Role ${req.body.roles[i]} does not exist!`
+        });
+        return;
+      }
+    }
+  }
+  next();
+};
+
+const verifySignUp = {
+  checkDuplicateCustomernameOrEmail,
+  checkRolesExisted
+};
+module.exports = verifySignUp;
