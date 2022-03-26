@@ -67,7 +67,7 @@ router.post("/signup", DuplicatedCustomernameorEmail, async (req, res, next) => 
   }
 });
 //logging in a customer//
-router.post("/signin", async (req, res) => {
+router.patch("/signin", async (req, res) => {
   try {
     Customer.findOne({ name: req.body.name }, (err, customer) => {
       if (err) return handleError(err);
