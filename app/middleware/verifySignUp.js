@@ -1,8 +1,8 @@
 const db = require("../models");
 const ROLES = db.ROLES;
-const Customer = db.customer;
+const customer = db.customer;
 
-const Customer = require("../models/customer.models");
+const Customer = require("../models/customer.model");
 
 checkDuplicateCustomernameOrEmail = async (req, res, next) => {
   let customer;
