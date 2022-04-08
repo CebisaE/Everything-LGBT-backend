@@ -51,8 +51,11 @@ isAdmin = (req, res, next) => {
     );
   });
 };
-const authJwt = {
+// const authJwt = {
+//   verifyToken,
+//   isAdmin,
+// };
+module.exports = {
   verifyToken,
-  isAdmin,
-};
-module.exports = authJwt;
+  isAdmin
+}
