@@ -5,6 +5,7 @@ const Customer = require("../models/customer.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/authJwt");
+// const nodemailer = require('nodemailer')
 
 async function getCustomer(req, res, next) {
   let customer;
@@ -60,13 +61,14 @@ router.post("/signup", DuplicatedCustomernameorEmail, async (req, res, next) => 
       phone_number: req.body.phone_number,
     });
     const newCustomer = await customer.save();
+
     res.status(201).json(newCustomer);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 //logging in a customer//
-router.post("/profile", async (req, res) => {
+router.post("/signin", async (req, res) => {
   try {
     Customer.findOne({ email: req.body.email }, (err, customer) => {
       if (err) return handleError(err);
