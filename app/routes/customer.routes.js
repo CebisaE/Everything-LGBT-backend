@@ -69,7 +69,7 @@ router.post("/signup", DuplicatedCustomernameorEmail, async (req, res, next) => 
 //logging in a customer//
 router.post("/signin", async (req, res) => {
   try {
-    Customer.findOne({ name: req.body.name }, (err, customer) => {
+    Customer.findOne({ email: req.body.email }, (err, customer) => {
       if (err) return handleError(err);
       if (!customer) {
         return res.status(404).send({ message: "customer Not found." });

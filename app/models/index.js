@@ -4,7 +4,7 @@ const db={};
 db.mongoose = mongoose;
 db.customer =require('./customer.model')
 db.role = require('./role.model')
-db.ROLES -["user","admin",];
+db.ROLES -["customer","admin",];
 
 
 

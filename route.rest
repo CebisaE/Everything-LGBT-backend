@@ -1,4 +1,4 @@
-GET http://localhost:8080/
+GET http://localhost:3000/customer
 
 ################################
 //create//
@@ -47,19 +47,19 @@ POST http://localhost:3000/customer/signup/
 content-type: application/json
 
 {
-    "name":"mihle",
-    "email": "mihle@gmail.com",
+    "name":"emihle",
+    "email": "emihle@gmail.com",
     "phone_number": "0747377043",
     "password": "cebisa"
 }
 ###
 //update//
-PATCH http://localhost:3000/customer/signin/
+POST http://localhost:3000/customer/signin/
 content-type: application/json
 
 {
-    "name":"siyanda",
-    "password": "siyanda"
+    "name":"emihle",
+    "password": "cebisa"
 }
 
 ################################
