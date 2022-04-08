@@ -7,9 +7,21 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/authJwt");
 const nodemailer = require('nodemailer')
 
+async function getCustomer(req, res, next) {
+  let customer;
+  try {
+    customer = await Customer.findById(req.params.id);
+    if (customer == null) {
+      return res.status(404).json({ message: "Cannot find Customer" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.customer = customer;
+  next();
+}
 
-
-async function DuplicatedEmail(req, res, next) {
+async function DuplicatedCustomernameorEmail(req, res, next) {
   let customer;
   try {
     customer = await Customer.findOne({ name: req.body.name });
@@ -198,6 +210,7 @@ router.delete("/:id", [verifyToken,getCustomer], async (req, res) => {
           res.status(500).send( {message: error.message} )
       }
     });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
