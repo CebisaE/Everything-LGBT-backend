@@ -5,7 +5,7 @@ const Customer = db.customer;
 const Role = db.role;
 
 verifyToken = (req, res, next) => {
-  const authHeader = req.headers["x-access-token"];
+  const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     return res.status(403).send({
@@ -19,7 +19,7 @@ verifyToken = (req, res, next) => {
       });
     }
     req.cart = decoded.cart;
-    req.customerId = decoded.id;
+    req.customerId = decoded._id;
     
     next();
   });

@@ -5,7 +5,7 @@ const Customer = require("../models/customer.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/authJwt");
-
+const nodemailer = require('nodemailer')
 
 async function getCustomer(req, res, next) {
   let customer;
@@ -61,6 +61,29 @@ router.post("/signup", DuplicatedCustomernameorEmail, async (req, res, next) => 
       phone_number: req.body.phone_number,
     });
     const newCustomer = await customer.save();
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS
+      }
+    });
+    
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: req.body.email,
+      subject: "You have been registered successfully",
+      text: `Thank you ${req.body.name} for signing up with Everything LGBT+ 
+      `
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
     res.status(201).json(newCustomer);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -74,7 +97,7 @@ router.post("/signin", async (req, res) => {
       if (!customer) {
         return res.status(404).send({ message: "customer Not found." });
       }
-      let passwordIsValid = bcrypt.compare(
+      let passwordIsValid = bcrypt.compareSync(
         req.body.password,
         customer.password
       );
@@ -85,12 +108,12 @@ router.post("/signin", async (req, res) => {
         });
       }
 
-      console.log(process.env.ACCESS_TOKEN_SECRET)
-      let token = jwt.sign({ id: customer.id }, process.env.ACCESS_TOKEN_SECRET, {
+      // console.log(process.env.ACCESS_TOKEN_SECRET)
+      let token = jwt.sign({ _id: customer._id }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: 86400, 
       });
       res.status(200).send({
-        id: customer.id,
+        _id: customer._id,
         name: customer.name,
         email: customer.email,
         password: customer.password,
@@ -104,8 +127,9 @@ router.post("/signin", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-router.put("/:id", getCustomer, async (req, res) => {
-  if (req.body.id != req.customerId) {
+//updating a customer//
+router.patch("/:id", [verifyToken ,getCustomer], async (req, res) => {
+  if (req.body.id != req.customer_Id) {
     return res.status(401).send({ message: "Unauthorized!" });
   }
   if (req.body.name != null) {
@@ -125,16 +149,67 @@ router.put("/:id", getCustomer, async (req, res) => {
   }
   try {
     const updatedCustomer = await res.customer.save();
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASS
+        }
+      });
+      
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: req.body.email,
+        subject: `${req.body.name} your account has been updated succesfully..`,
+        text: `
+        ${req.body.name} Your account has been updated succesfully.
+        `
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
     res.json(updatedCustomer);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 //deleting a customer//
-router.delete("/:id", getCustomer, async (req, res) => {
+router.delete("/:id", [verifyToken,getCustomer], async (req, res) => {
+  const  { name , email } = res.customer
   try {
     await res.customer.remove();
-    res.json({ message: "Deleted Customer" });
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS
+      }
+    });
+    
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: `${name} your accout has been removed`,
+      text: `thanks for using us
+      `
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }try {
+          res.json({ message: `thank you ${name}, your email was sent`})
+      } catch (error) {
+          res.status(500).send( {message: error.message} )
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
