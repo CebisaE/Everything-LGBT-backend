@@ -1,7 +1,7 @@
 const creds = require("../config/auth.config");
 const config = require('config')
 const db = require("../models");
-const Customer= db.customer;
+const Customer= db.customers;
 const Role = db.role;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -56,7 +56,7 @@ exports.signup = (req, res) => {
 };
 exports.signin = (req, res) => {
   Customer.findOne({
-    name: req.body.name
+    email: req.body.email
   })
     .populate("roles", "-__v")
     .exec((err, customer) => {
@@ -77,7 +77,7 @@ exports.signin = (req, res) => {
           message: "Invalid Password!"
         });
       }
-      var token = jwt.sign({ id: customer.id }, config.get("secret"), {
+      var token = jwt.sign({ _id: customer._id }, config.get("secret"), {
         expiresIn: 86400 // 24 hours
       });
       var authorities = [];
