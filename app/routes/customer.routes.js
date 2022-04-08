@@ -97,7 +97,7 @@ router.post("/signin", async (req, res) => {
       if (!customer) {
         return res.status(404).send({ message: "customer Not found." });
       }
-      let passwordIsValid = bcrypt.compareSync(
+      let passwordIsValid = bcrypt.compare(
         req.body.password,
         customer.password
       );
@@ -128,7 +128,7 @@ router.post("/signin", async (req, res) => {
   }
 });
 //updating a customer//
-router.put("/:id", verifyToken ,getCustomer, async (req, res) => {
+router.put("/:id",getCustomer, async (req, res) => {
   if (req.body.id != req.customer_Id) {
     return res.status(401).send({ message: "Unauthorized!" });
   }
