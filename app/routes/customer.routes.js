@@ -128,7 +128,7 @@ router.post("/signin", async (req, res) => {
   }
 });
 //updating a customer//
-router.patch("/:id", [verifyToken ,getCustomer], async (req, res) => {
+router.patch("/:id", verifyToken ,getCustomer, async (req, res) => {
   if (req.body.id != req.customer_Id) {
     return res.status(401).send({ message: "Unauthorized!" });
   }
@@ -179,7 +179,7 @@ router.patch("/:id", [verifyToken ,getCustomer], async (req, res) => {
   }
 });
 //deleting a customer//
-router.delete("/:id", [verifyToken,getCustomer], async (req, res) => {
+router.delete("/:id", verifyToken,getCustomer, async (req, res) => {
   const  { name , email } = res.customer
   try {
     await res.customer.remove();
