@@ -128,7 +128,7 @@ router.post("/signin", async (req, res) => {
   }
 });
 //updating a customer//
-router.patch("/:id", verifyToken ,getCustomer, async (req, res) => {
+router.put("/:id", verifyToken ,getCustomer, async (req, res) => {
   if (req.body.id != req.customer_Id) {
     return res.status(401).send({ message: "Unauthorized!" });
   }
