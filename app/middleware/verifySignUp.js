@@ -1,6 +1,6 @@
 const db = require("../models");
 const ROLES = db.ROLES;
-const customer = db.customer;
+const customer = db.customers;
 
 const Customer = require("../models/customer.model");
 
