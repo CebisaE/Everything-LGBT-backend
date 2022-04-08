@@ -1,5 +1,5 @@
 const { verifySignUp } = require("../middleware");
-const controller = require("../controllers/auth.controller");
+// const controller = require("../controllers/auth.controller");
 module.exports = function(app) {
   app.use((req, res, next) => {
     res.header(
@@ -17,5 +17,5 @@ module.exports = function(app) {
     ],
     controller.signup
   );
-  app.post("/signin", controller.signin);
+  app.post("/signin");
 };
